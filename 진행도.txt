@@ -1,0 +1,62 @@
+1. local 에서 docker 를 활용하여 인터넷에 되는지 확인
+- 성공 : 3시간 소요
+
+- 뭘 했는지
+[1] docker 다운로드 및 사용
+[2] localhost:8000 하니까 바로 적용완료
+[3] @apt.get 으로 데코레이터와 아래의 함수가 async def 으로 적용되었고 실행 되어 
+
+[4] request, endpoint가 뭔지
+ `-` Request(요청): 클라이언트가 서버에 보내는 HTTP 메시지 
+     : 구성 - 메서드(GET/POST/PUT/DELETE…), 경로(/login), 헤더(Content-Type 등), 바디(JSON/폼/파일…)
+
+ `-` Endpoint(엔드포인트): 특정 경로+메서드에 연결된 서버 측 함수
+     : ex) @app.post("/login")   # ← 이 조합이 바로 하나의 endpoint
+
+
+[5] JSON 에서의 요청과 응답
+
+요청 :
+```
+curl -X POST http://localhost:8000/api/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"1234"}'
+```
+
+응답 :
+```
+#성공
+{
+  "ok": true,
+  "user": "admin",
+  "message": "login success"
+}
+
+#실패
+{
+  "ok": false,
+  "error": "invalid credentials"
+}
+
+```
+
+
+[6]  NAT, 127.0.0.1, 0.0.0.0 뜻
+
+'컴퓨터 자기자신' (인터넷/와이파이가 바뀌어도 안 변함 ) : 127.0.0.1 = loopback(루프백) = localhost 
+
+0.0.0.0(와일드카드 바인딩) :  #바인딩 : 실제 기본 값
+“모든 인터페이스로 듣겠다”는 뜻 으로 0.0.0.0:80 으로 컨테이너에서 열면 어디서 들어오든 받겠다는 의미
+
+NAT (Network Address Translation) 
+ : 주소/포트를 통신해서 이어주는 기술
+
+ex) 호스트의 127.0.0.1:8000 → (포트포워딩/NAT) → 컨테이너 0.0.0.0:80
+
+
+[7] 외부 작업시 기본적으로
+외부가 접속하려면 포트/방화벽/도메인 작업 필요)
+
+
+[8]
+
